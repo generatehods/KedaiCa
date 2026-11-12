@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alpha Call — Memecoin CA Access</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-emerald-500 selection:text-zinc-950">
+
+  <!-- Navbar / Menu -->
+  <nav class="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="#" class="font-bold text-lg tracking-tight text-emerald-400">SOL<span class="text-white">ALPHA</span></a>
+      <div class="space-x-6 text-sm font-medium text-zinc-300">
+        <a href="#menu" class="hover:text-emerald-400 transition">Menu</a>
+        <a href="#bayar" class="hover:text-emerald-400 transition">Beli CA ($1)</a>
+        <a href="#kontak" class="hover:text-emerald-400 transition">Email</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero & Menu Section -->
+  <main class="max-w-3xl mx-auto px-4 py-12 space-y-12">
+    <section id="menu" class="space-y-4">
+      <span class="inline-block px-3 py-1 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
+        Solana Memecoin Watchlist
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        Tanya Memecoin Apa yang Sedang Dibeli
+      </h1>
+      <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
+        Dapatkan Contract Address (CA) memecoin pilihan langsung ke inbox email kamu. Tanpa langganan bulanan—cukup bayar sekali per request.
+      </p>
+
+      <!-- Menu Card -->
+      <div class="grid sm:grid-cols-2 gap-4 pt-4">
+        <div class="p-5 rounded-xl bg-zinc-900 border border-emerald-500/40 space-y-2">
+          <div class="flex justify-between items-center">
+            <h2 class="font-bold text-lg">1x Akses CA Memecoin</h2>
+            <span class="px-2.5 py-0.5 text-sm font-bold bg-emerald-500 text-zinc-950 rounded-md">$1</span>
+          </div>
+          <p class="text-xs text-zinc-400">
+            Transfer $1 (dalam SOL atau USDC) ke wallet Solana di bawah, lalu kirim TX Hash via form email. CA dikirim manual setelah transaksi terverifikasi.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-xl bg-zinc-900 border border-zinc-800 space-y-2">
+          <div class="flex justify-between items-center">
+            <h2 class="font-bold text-lg">Aturan & Catatan</h2>
+            <span class="text-xs text-zinc-500">DYOR</span>
+          </div>
+          <p class="text-xs text-zinc-400">
+            Bukan ajakan membeli (NFA). Pastikan TX Hash valid di jaringan Solana sebelum mengirim email konfirmasi.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment & Verification Section -->
+    <section id="bayar" class="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-6">
+      <div>
+        <h3 class="text-xl font-bold">Langkah 1: Kirim $1 ke Wallet Solana</h3>
+        <p class="text-xs text-zinc-400 mt-1">Kirim SOL atau USDC senilai $1 ke alamat berikut:</p>
+      </div>
+
+      <!-- Wallet Box -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-zinc-950 p-3 rounded-xl border border-zinc-800">
+        <code id="walletAddress" class="text-xs sm:text-sm text-emerald-400 break-all flex-1 select-all">
+          FSqRLFnykDnCZ6mQdnn4GPPwNz6NEFYU7sHKmrrw1X5b
+        </code>
+        <button onclick="copyWallet()" id="copyBtn" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold rounded-lg transition shrink-0">
+          Copy Address
+        </button>
+      </div>
+
+      <hr class="border-zinc-800" />
+
+      <!-- Email / TX Hash Form -->
+      <div id="kontak">
+        <h3 class="text-xl font-bold">Langkah 2: Kirim TX Hash ke Email</h3>
+        <p class="text-xs text-zinc-400 mt-1">Masukkan email kamu dan TX Hash (Signature) transaksi Solana agar CA bisa segera dikirim.</p>
+      </div>
+
+      <form onsubmit="sendEmail(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-zinc-300 mb-1">Email Kamu (Untuk menerima balasan CA)</label>
+          <input type="email" id="senderEmail" required placeholder="nama@email.com"
+            class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-sm focus:outline-none focus:border-emerald-500" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-zinc-300 mb-1">TX Hash / Signature Transaksi Solana</label>
+          <input type="text" id="txHash" required placeholder="Contoh: 5xK9... (paste signature dari Phantom/Solscan)"
+            class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-sm focus:outline-none focus:border-emerald-500" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-zinc-300 mb-1">Catatan Tambahan (Opsional)</label>
+          <input type="text" id="note" placeholder="Misal: Sudah kirim $1 via USDC"
+            class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-sm focus:outline-none focus:border-emerald-500" />
+        </div>
+
+        <button type="submit"
+          class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm transition">
+          Kirim TX Hash via Email
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="text-center text-xs text-zinc-600 py-8 border-t border-zinc-900">
+    &copy; 2026 Solana Alpha Call. Verifikasi manual via Solscan.
+  </footer>
+
+  <script>
+    // GANTI DENGAN EMAIL KAMU
+    const MY_EMAIL = "EMAIL_KAMU@gmail.com";
+
+    function copyWallet() {
+      const addr = document.getElementById("walletAddress").innerText.trim();
+      navigator.clipboard.writeText(addr);
+      const btn = document.getElementById("copyBtn");
+      btn.innerText = "Tersalin!";
+      btn.classList.add("bg-emerald-600", "text-white");
+      setTimeout(() => {
+        btn.innerText = "Copy Address";
+        btn.classList.remove("bg-emerald-600", "text-white");
+      }, 2000);
+    }
+
+    function sendEmail(e) {
+      e.preventDefault();
+      const sender = document.getElementById("senderEmail").value.trim();
+      const tx = document.getElementById("txHash").value.trim();
+      const note = document.getElementById("note").value.trim();
+
+      const subject = encodeURIComponent("Konfirmasi Pembayaran $1 - Request CA Memecoin");
+      const body = encodeURIComponent(
+        `Halo,\n\nSaya sudah mengirim $1 ke wallet Solana Anda untuk menanyakan CA memecoin yang dibeli.\n\n` +
+        `Detail Konfirmasi:\n` +
+        `- Email Pengirim: ${sender}\n` +
+        `- TX Hash / Signature: ${tx}\n` +
+        `- Link Cek Solscan: https://solscan.io/tx/${tx}\n` +
+        `- Catatan: ${note || "-"}\n\n` +
+        `Mohon balasan CA-nya ke email ini. Terima kasih!`
+      );
+
+      window.location.href = `mailto:${MY_EMAIL}?subject=${subject}&body=${body}`;
+    }
+  </script>
+</body>
+</html>
